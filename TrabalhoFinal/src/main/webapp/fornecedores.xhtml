@@ -1,0 +1,205 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">
+        <h:outputText value="Fornecedores"></h:outputText>
+    </ui:define> 
+    <ui:define name="content">
+        <h:form id="frmList">
+            <h:panelGroup id="pngList">
+                <p:fieldset toggleable="true">
+                    <p:dataTable id="datalist" value="#{fornecedorController.fornecedorList}" var="item"
+                                 selectionMode="single" selection="#{fornecedorController.selected}"
+                                 widgetVar="datalistFornecedorWidgetVar"
+                                 rowKey="#{item.id}"
+                                 paginator="true"
+                                 rows="3"
+                                 rowsPerPageTemplate="5, 10, 50, 100"
+                                 emptyMessage="Nenhum fornecedor cadastrado...">
+                        
+                        <p:ajax event="rowSelect" update="btnEdit btnDelete btnView"/>
+                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView"/>
+
+                        <p:column width="4%" sortBy="#{item.id}" filterBy="#{item.id}">
+                            <f:facet name="header">
+                                <h:outputText value="ID"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+
+                        <p:column width="10%" sortBy="#{item.razaoSocial}" filterBy="#{item.razaoSocial}">
+                            <f:facet name="header">
+                                <h:outputText value="Razão Social"/>
+                            </f:facet>
+                            <h:outputText value="#{item.razaoSocial}"/>
+                        </p:column>
+                        
+                        <p:column width="10%" sortBy="#{item.nomeFantasia}" filterBy="#{item.nomeFantasia}">
+                            <f:facet name="header">
+                                <h:outputText value="Nome Fantasia"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nomeFantasia}"/>
+                        </p:column>
+
+                        <p:column width="6%" sortBy="#{item.cnpj}" filterBy="#{item.cnpj}">
+                            <f:facet name="header">
+                                <h:outputText value="CNPJ"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cnpj}"/>
+                        </p:column>
+
+                        <p:column width="10%" sortBy="#{item.email}" filterBy="#{item.email}">
+                            <f:facet name="header">
+                                <h:outputText value="Email"/>
+                            </f:facet>
+                            <h:outputText value="#{item.email}"/>
+                        </p:column>
+                        
+                        <p:column width="6%" sortBy="#{item.datahorareg}" filterBy="#{item.datahorareg}">
+                            <f:facet name="header">
+                                <h:outputText value="Registro"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datahorareg}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                        <f:facet name="footer">
+                            
+                            <p:commandButton id="btnCreate" value="Incluir Fornecedor" icon="pi pi-file"
+                                             onclick="PF('dlgCreate').show()"/>
+                            
+                            <p:commandButton id="btnEdit" icon="pi pi-user-edit" value="Editar Fornecedor"
+                                             update="EditForm" oncomplete="PF('dlgEdit').show()"
+                                             disabled="#{empty fornecedorController.selected}"/>
+                            
+                            <p:commandButton id="btnDelete" icon="pi pi-trash" value="Excluir Fornecedor"
+                                             actionListener="#{fornecedorController.deletarFornecedor()}" update="frmList"
+                                             disabled="#{empty fornecedorController.selected}">
+                                <p:confirm header="Confirmar Exclusão" message="Você confirma a exclusão do registro?"
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            
+                            <p:commandButton id="btnView" icon="pi pi-user-edit" value="Detalhes do Fornecedor"
+                                             update="formView" oncomplete="PF('dlgView').show()"
+                                             disabled="#{empty fornecedorController.selected}"/>
+                            
+                        </f:facet>
+                    </p:dataTable>
+                </p:fieldset>
+                
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check"/>
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times"/>
+                </p:confirmDialog>
+                
+            </h:panelGroup>
+        </h:form>
+        
+        <p:dialog header="Novo Fornecedor" widgetVar="dlgCreate" height="400" width="600" showEffect="fade" modal="true">
+            <h:form id="CreateForm">
+                <p:growl id="growl" showDetail="true"/>
+                <h:panelGrid id="pngCadastro" columns="2">
+                    
+                    <p:outputLabel id="oplRazaoSocial" value="Razão Social:" for="iptRazaoSocial"/>
+                    <p:inputText id="iptRazaoSocial" size="40" label="Razão Social" required="true"
+                                 requiredMessage="O atributo Razão Social é obrigatório"
+                                 value="#{fornecedorController.fornecedor.razaoSocial}" maxlength="50"/>
+                    
+                    <p:outputLabel id="oplNomeFantasia" value="Nome Fantasia:" for="iptNomeFantasia"/>
+                    <p:inputText id="iptNomeFantasia" size="40" label="Nome Fantasia" required="true"
+                                 requiredMessage="O atributo Nome Fantasia é obrigatório"
+                                 value="#{fornecedorController.fornecedor.nomeFantasia}" maxlength="50"/>
+                    
+                    <p:outputLabel id="oplCnpj" value="CNPJ:" for="iptCnpj"/>
+                    <p:inputText id="iptCnpj" size="40" label="CNPJ" required="true"
+                                 requiredMessage="O atributo CNPJ é obrigatório"
+                                 value="#{fornecedorController.fornecedor.cnpj}" maxlength="18"/>
+                    
+                    <p:outputLabel id="oplEmail" value="Email:" for="iptEmail"/>
+                    <p:inputText id="iptEmail" size="40" label="Email" required="true" 
+                                 requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
+                                 value="#{fornecedorController.fornecedor.email}" maxlength="50">
+                        <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"/>
+                    </p:inputText>
+               
+                </h:panelGrid>
+                
+                <p:commandButton id="btnCadastrar" value="Cadastrar" update="@form, frmList"
+                                 action="#{fornecedorController.adicionarFornecedor()}" onclick="dlgCreate.hide()"/>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Editar Fornecedor" widgetVar="dlgEdit" height="400" width="600" showEffect="fade" modal="true">
+            <h:form id="EditForm">
+                <p:growl id="growl" showDetail="true"/>
+                <h:panelGrid id="pngEdicao" columns="2">
+                    <p:outputLabel id="oplId" value="ID:" for="iptId"/>
+                    <p:inputText id="iptId" size="10" label="ID" disabled="true"
+                                 value="#{fornecedorController.selected.id}"/>
+                    
+                    <p:outputLabel id="oplRazaoSocial" value="Razão Social:" for="iptRazaoSocial"/>
+                    <p:inputText id="iptRazaoSocial" size="40" label="Razão Social" required="true"
+                                 requiredMessage="O atributo Razão Social é obrigatório"
+                                 value="#{fornecedorController.selected.razaoSocial}" maxlength="50"/>
+                    
+                    <p:outputLabel id="oplNomeFantasia" value="Nome Fantasia:" for="iptNomeFantasia"/>
+                    <p:inputText id="iptNomeFantasia" size="40" label="Nome Fantasia" required="true"
+                                 requiredMessage="O atributo Nome Fantasia é obrigatório"
+                                 value="#{fornecedorController.selected.nomeFantasia}" maxlength="50"/>
+                    
+                    <p:outputLabel id="oplCnpj" value="CNPJ:" for="iptCnpj"/>
+                    <p:inputText id="iptCnpj" size="40" label="CNPJ" required="true"
+                                 requiredMessage="O atributo CNPJ é obrigatório"
+                                 value="#{fornecedorController.selected.cnpj}" maxlength="18"/>
+                    
+                    <p:outputLabel id="oplEmail" value="Email:" for="iptEmail"/>
+                    <p:inputText id="iptEmail" size="40" label="Email" required="true" 
+                                 requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
+                                 value="#{fornecedorController.selected.email}" maxlength="50">
+                        <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"/>
+                    </p:inputText>
+                    
+                    <p:outputLabel id="oplDatahorareg" for="iptDatahorareg" value="Registro"/>
+                    <p:inputText id="iptDatahorareg" value="#{fornecedorController.selected.datahorareg}" disabled="true">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="Americas/Sao_Paulo"/> 
+                    </p:inputText>
+                    
+                </h:panelGrid>
+                
+                <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, frmList"
+                                 action="#{fornecedorController.editarFornecedor()}" onclick="dlgEdit.hide()"/>
+                
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Visualizar detalhes do fornecedor" widgetVar="dlgView" 
+                  height="250" width="500" showEffect="fade" modal="true">
+            <h:form id="formView">
+                <h:panelGrid id="pngView" columns="2">
+                    
+                    <p:outputLabel value="ID:"/>
+                    <p:outputLabel value="#{fornecedorController.selected.id}"/>
+                    
+                    <p:outputLabel value="Razão Social:"/>
+                    <p:outputLabel value="#{fornecedorController.selected.razaoSocial}"/>
+                    
+                    <p:outputLabel value="Nome fantasia:"/>
+                    <p:outputLabel value="#{fornecedorController.selected.nomeFantasia}"/>
+                                        
+                    <p:outputLabel value="CNPJ:"/>
+                    <p:outputLabel value="#{fornecedorController.selected.cnpj}"/>
+                    
+                    <p:outputLabel value="Email:"/>
+                    <p:outputLabel value="#{fornecedorController.selected.email}"/>  
+                                        
+                </h:panelGrid>  
+            </h:form>
+        </p:dialog>
+        
+    </ui:define>
+ 
+</ui:composition>

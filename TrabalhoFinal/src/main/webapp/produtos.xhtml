@@ -1,0 +1,211 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">
+        <h:outputText value="Produtos"></h:outputText>
+    </ui:define>                 
+    <ui:define name="content">
+        <h:form id="frmList">
+            <h:panelGroup id="pngList">
+                <p:fieldset toggleable="true">
+                    <p:dataTable id="datalist" value="#{produtoController.produtoList}" var="item"
+                                 selectionMode="single" selection="#{produtoController.selected}"
+                                 widgetVar="datalistProdutoWidgetVar"
+                                 rowKey="#{item.id}"
+                                 paginator="true"
+                                 rows="3"
+                                 rowsPerPageTemplate="5, 10, 50, 100"
+                                 emptyMessage="Nenhum produto cadastrado...">
+                        
+                        <p:ajax event="rowSelect" update="btnEdit btnDelete btnView"/>
+                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView"/>
+
+                        <p:column width="3%" sortBy="#{item.id}" filterBy="#{item.id}">
+                            <f:facet name="header">
+                                <h:outputText value="ID"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+
+                        <p:column width="20%" sortBy="#{item.descricao}" filterBy="#{item.descricao}">
+                            <f:facet name="header">
+                                <h:outputText value="Descrição"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descricao}"/>
+                        </p:column>
+                        
+                        <p:column width="5%" sortBy="#{item.preco}" filterBy="#{item.preco}">
+                            <f:facet name="header">
+                                <h:outputText value="Preço"/>
+                            </f:facet>
+                            <h:outputText value="#{item.preco}"/>
+                        </p:column>
+
+                        <p:column width="5%" sortBy="#{item.qtdEstoque}" filterBy="#{item.qtdEstoque}">
+                            <f:facet name="header">
+                                <h:outputText value="Quantidade Estoque"/>
+                            </f:facet>
+                            <h:outputText value="#{item.qtdEstoque}"/>
+                        </p:column>
+
+                        <p:column width="5%" sortBy="#{item.unidadeEmbalagem}" filterBy="#{item.unidadeEmbalagem}">
+                            <f:facet name="header">
+                                <h:outputText value="Unidade Embalagem"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unidadeEmbalagem}"/>
+                        </p:column>
+                        
+                        <p:column width="10%" sortBy="#{item.categoria}" filterBy="#{item.categoria}">
+                            <f:facet name="header">
+                                <h:outputText value="Categoria"/>
+                            </f:facet>
+                            <h:outputText value="#{item.categoria}"/>
+                        </p:column>
+                        
+                        <p:column width="5%" sortBy="#{item.datahorareg}" filterBy="#{item.datahorareg}">
+                            <f:facet name="header">
+                                <h:outputText value="Registro"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datahorareg}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                        <f:facet name="footer">
+                            
+                            <p:commandButton id="btnCreate" value="Incluir Produto" icon="pi pi-file"
+                                             onclick="PF('dlgCreate').show()"/>
+                            
+                            <p:commandButton id="btnEdit" icon="pi pi-user-edit" value="Editar Produto"
+                                             update="EditForm" oncomplete="PF('dlgEdit').show()"
+                                             disabled="#{empty produtoController.selected}"/>
+                            
+                            <p:commandButton id="btnDelete" icon="pi pi-trash" value="Excluir Produto"
+                                             actionListener="#{produtoController.deletarProduto()}" update="frmList"
+                                             disabled="#{empty produtoController.selected}">
+                                <p:confirm header="Confirmar Exclusão" message="Você confirma a exclusão do registro?"
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            
+                            <p:commandButton id="btnView" icon="pi pi-user-edit" value="Detalhes do Produto"
+                                             update="formView" oncomplete="PF('dlgView').show()"
+                                             disabled="#{empty produtoController.selected}"/>
+                            
+                        </f:facet>
+                    </p:dataTable>
+                </p:fieldset>
+                
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check"/>
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times"/>
+                </p:confirmDialog>
+                
+            </h:panelGroup>
+        </h:form>
+        
+        <p:dialog header="Novo Produto" widgetVar="dlgCreate" height="400" width="600" showEffect="fade" modal="true">
+            <h:form id="CreateForm">
+                <p:growl id="growl" showDetail="true"/>
+                <h:panelGrid id="pngCadastro" columns="2">
+                    
+                    <p:outputLabel id="oplDescricao" value="Descrição:" for="iptDescricao"/>
+                    <p:inputText id="iptDescricao" size="40" label="Descrição" required="true"
+                                 requiredMessage="O atributo descrição é obrigatório"
+                                 value="#{produtoController.produto.descricao}" maxlength="50"/>
+                    
+                    <p:outputLabel id="oplPreco" value="Preço" for="iptPreco"/>
+                    <p:inputNumber id="iptPreco" value="#{produtoController.produto.preco}" 
+                                   minValue="1" decimalPlaces="2" required="true" requiredMessage="O atributo preço é obrigatório"/>
+                    
+                    <p:outputLabel id="oplQtdEstoque" value="Quantidade Estoque" for="iptQtdEstoque"/>
+                    <p:inputNumber id="iptQtdEstoque" value="#{produtoController.produto.qtdEstoque}" 
+                                   minValue="0" decimalPlaces="2" required="true" requiredMessage="O atributo quantidade em estoque é obrigatório"/>
+                    
+                    <p:outputLabel id="oplUnidadeEmbalagem" value="Unidade Embalagem:" for="iptUnidadeEmbalagem"/>
+                    <p:inputText id="iptUnidadeEmbalagem" size="10" label="Unidade Embalagem" required="true"
+                                 requiredMessage="O atributo unidade embalagem é obrigatório"
+                                 value="#{produtoController.produto.unidadeEmbalagem}" maxlength="10"/>
+                    
+                    <p:outputLabel id="oplCategoria" value="Categoria:" for="iptCategoria"/>
+                    <p:inputText id="iptCategoria" size="40" label="Categoria" required="true"
+                                 requiredMessage="O atributo categoria é obrigatório"
+                                 value="#{produtoController.produto.categoria}" maxlength="40"/>
+               
+                </h:panelGrid>
+                
+                <p:commandButton id="btnCadastrar" value="Cadastrar" update="@form, frmList"
+                                 action="#{produtoController.adicionarProduto()}" onclick="dlgCreate.hide()"/>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Editar Produto" widgetVar="dlgEdit" height="400" width="600" showEffect="fade" modal="true">
+            <h:form id="EditForm">
+                <p:growl id="growl" showDetail="true"/>
+                <h:panelGrid id="pngEdicao" columns="2">
+                    <p:outputLabel id="oplId" value="ID:" for="iptId"/>
+                    <p:inputText id="iptId" size="10" label="ID" disabled="true"
+                                 value="#{produtoController.selected.id}"/>
+                    
+                    <p:outputLabel id="oplDescricao" value="Descrição:" for="iptDescricao"/>
+                    <p:inputText id="iptDescricao" size="40" label="Descrição" required="true"
+                                 requiredMessage="O atributo descrição é obrigatório"
+                                 value="#{produtoController.selected.descricao}" maxlength="50"/>
+                    
+                    <p:outputLabel id="oplPreco" value="Preço" for="iptPreco"/>
+                    <p:inputNumber id="iptPreco" value="#{produtoController.selected.preco}" 
+                                   minValue="1" decimalPlaces="2" required="true" requiredMessage="O atributo preço é obrigatório"/>
+                    
+                    <p:outputLabel id="oplQtdEstoque" value="Quantidade Estoque" for="iptQtdEstoque"/>
+                    <p:inputNumber id="iptQtdEstoque" value="#{produtoController.selected.qtdEstoque}" 
+                                   minValue="0" decimalPlaces="2" required="true" requiredMessage="O atributo quantidade em estoque é obrigatório"/>
+                    
+                    <p:outputLabel id="oplUnidadeEmbalagem" value="Unidade Embalagem:" for="iptUnidadeEmbalagem"/>
+                    <p:inputText id="iptUnidadeEmbalagem" size="10" label="Unidade Embalagem" required="true"
+                                 requiredMessage="O atributo unidade embalagem é obrigatório"
+                                 value="#{produtoController.selected.unidadeEmbalagem}" maxlength="10"/>
+                    
+                    <p:outputLabel id="oplCategoria" value="Categoria:" for="iptCategoria"/>
+                    <p:inputText id="iptCategoria" size="40" label="Categoria" required="true"
+                                 requiredMessage="O atributo categoria é obrigatório"
+                                 value="#{produtoController.selected.categoria}" maxlength="40"/>
+                    
+                </h:panelGrid>
+                
+                <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, frmList"
+                                 action="#{produtoController.editarProduto()}" onclick="dlgEdit.hide()"/>
+                
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Visualizar detalhes do produto" widgetVar="dlgView" 
+                  height="250" width="500" showEffect="fade" modal="true">
+            <h:form id="formView">
+                <h:panelGrid id="pngView" columns="2">
+                    
+                    <p:outputLabel value="ID:"/>
+                    <p:outputLabel value="#{produtoController.selected.id}"/>
+                    
+                    <p:outputLabel value="Descrição:"/>
+                    <p:outputLabel value="#{produtoController.selected.descricao}"/>
+                    
+                    <p:outputLabel value="Preço:"/>
+                    <p:outputLabel value="#{produtoController.selected.preco}"/>
+                                        
+                    <p:outputLabel value="Quantidade Estoque:"/>
+                    <p:outputLabel value="#{produtoController.selected.qtdEstoque}"/>
+                    
+                    <p:outputLabel value="Unidade Embalagem:"/>
+                    <p:outputLabel value="#{produtoController.selected.unidadeEmbalagem}"/>  
+                    
+                    <p:outputLabel value="Categoria:"/>
+                    <p:outputLabel value="#{produtoController.selected.categoria}"/> 
+                                        
+                </h:panelGrid>  
+            </h:form>
+        </p:dialog>
+        
+    </ui:define>
+</ui:composition>
