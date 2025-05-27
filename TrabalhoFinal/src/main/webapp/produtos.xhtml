@@ -41,14 +41,18 @@
                             <f:facet name="header">
                                 <h:outputText value="Preço"/>
                             </f:facet>
-                            <h:outputText value="#{item.preco}"/>
+                            <h:outputText value="#{item.preco}">
+                                <f:convertNumber pattern="#,##0.00" type="number"/>
+                            </h:outputText>
                         </p:column>
 
                         <p:column width="5%" sortBy="#{item.qtdEstoque}" filterBy="#{item.qtdEstoque}">
                             <f:facet name="header">
                                 <h:outputText value="Quantidade Estoque"/>
                             </f:facet>
-                            <h:outputText value="#{item.qtdEstoque}"/>
+                            <h:outputText value="#{item.qtdEstoque}">
+                                <f:convertNumber pattern="#,##0.00" type="number"/>
+                            </h:outputText>
                         </p:column>
 
                         <p:column width="5%" sortBy="#{item.unidadeEmbalagem}" filterBy="#{item.unidadeEmbalagem}">
@@ -123,16 +127,29 @@
                     <p:outputLabel id="oplQtdEstoque" value="Quantidade Estoque" for="iptQtdEstoque"/>
                     <p:inputNumber id="iptQtdEstoque" value="#{produtoController.produto.qtdEstoque}" 
                                    minValue="0" decimalPlaces="2" required="true" requiredMessage="O atributo quantidade em estoque é obrigatório"/>
+        
+                    <p:outputLabel id="oplUnidadeEmbalagem" value="Unidade Embalagem:" for="somUnidadeEmbalagem"/>
+                    <p:selectOneMenu id="somUnidadeEmbalagem" value="#{produtoController.produto.unidadeEmbalagem}">
+                        <f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+                        <f:selectItem itemLabel="KG" itemValue="KG"/>
+                        <f:selectItem itemLabel="Unidade" itemValue="Unidade"/>
+                        <f:selectItem itemLabel="Pacote" itemValue="Pacote"/>
+                        <f:selectItem itemLabel="Litro" itemValue="Litro"/>
+                    </p:selectOneMenu>
                     
-                    <p:outputLabel id="oplUnidadeEmbalagem" value="Unidade Embalagem:" for="iptUnidadeEmbalagem"/>
-                    <p:inputText id="iptUnidadeEmbalagem" size="10" label="Unidade Embalagem" required="true"
-                                 requiredMessage="O atributo unidade embalagem é obrigatório"
-                                 value="#{produtoController.produto.unidadeEmbalagem}" maxlength="10"/>
-                    
-                    <p:outputLabel id="oplCategoria" value="Categoria:" for="iptCategoria"/>
-                    <p:inputText id="iptCategoria" size="40" label="Categoria" required="true"
-                                 requiredMessage="O atributo categoria é obrigatório"
-                                 value="#{produtoController.produto.categoria}" maxlength="40"/>
+                    <p:outputLabel id="oplCategoria" value="Categoria:" for="somCategoria"/>
+                    <p:selectOneMenu id="somCategoria" value="#{produtoController.produto.categoria}">
+                        <f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+                        <f:selectItem itemLabel="Mercearia" itemValue="Mercearia"/>
+                        <f:selectItem itemLabel="Bebidas" itemValue="Bebidas"/>
+                        <f:selectItem itemLabel="Congelados" itemValue="Congelados"/>
+                        <f:selectItem itemLabel="Carnes" itemValue="Carnes"/>
+                        <f:selectItem itemLabel="Frios" itemValue="Frios"/>
+                        <f:selectItem itemLabel="FLV" itemValue="FLV"/>
+                        <f:selectItem itemLabel="Limpeza" itemValue="Limpeza"/>
+                        <f:selectItem itemLabel="Bazar" itemValue="Bazar"/>
+                        <f:selectItem itemLabel="Higiene" itemValue="Higiene"/>
+                    </p:selectOneMenu>
                
                 </h:panelGrid>
                 
@@ -162,15 +179,28 @@
                     <p:inputNumber id="iptQtdEstoque" value="#{produtoController.selected.qtdEstoque}" 
                                    minValue="0" decimalPlaces="2" required="true" requiredMessage="O atributo quantidade em estoque é obrigatório"/>
                     
-                    <p:outputLabel id="oplUnidadeEmbalagem" value="Unidade Embalagem:" for="iptUnidadeEmbalagem"/>
-                    <p:inputText id="iptUnidadeEmbalagem" size="10" label="Unidade Embalagem" required="true"
-                                 requiredMessage="O atributo unidade embalagem é obrigatório"
-                                 value="#{produtoController.selected.unidadeEmbalagem}" maxlength="10"/>
+                    <p:outputLabel id="oplUnidadeEmbalagem" value="Unidade Embalagem:" for="somUnidadeEmbalagem"/>
+                    <p:selectOneMenu id="somUnidadeEmbalagem" value="#{produtoController.produto.unidadeEmbalagem}">
+                        <f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+                        <f:selectItem itemLabel="KG" itemValue="KG"/>
+                        <f:selectItem itemLabel="Unidade" itemValue="Unidade"/>
+                        <f:selectItem itemLabel="Pacote" itemValue="Pacote"/>
+                        <f:selectItem itemLabel="Litro" itemValue="Litro"/>
+                    </p:selectOneMenu>
                     
-                    <p:outputLabel id="oplCategoria" value="Categoria:" for="iptCategoria"/>
-                    <p:inputText id="iptCategoria" size="40" label="Categoria" required="true"
-                                 requiredMessage="O atributo categoria é obrigatório"
-                                 value="#{produtoController.selected.categoria}" maxlength="40"/>
+                    <p:outputLabel id="oplCategoria" value="Categoria:" for="somCategoria"/>
+                    <p:selectOneMenu id="somCategoria" value="#{produtoController.produto.categoria}">
+                        <f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+                        <f:selectItem itemLabel="Mercearia" itemValue="Mercearia"/>
+                        <f:selectItem itemLabel="Bebidas" itemValue="Bebidas"/>
+                        <f:selectItem itemLabel="Congelados" itemValue="Congelados"/>
+                        <f:selectItem itemLabel="Carnes" itemValue="Carnes"/>
+                        <f:selectItem itemLabel="Frios" itemValue="Frios"/>
+                        <f:selectItem itemLabel="FLV" itemValue="FLV"/>
+                        <f:selectItem itemLabel="Limpeza" itemValue="Limpeza"/>
+                        <f:selectItem itemLabel="Bazar" itemValue="Bazar"/>
+                        <f:selectItem itemLabel="Higiene" itemValue="Higiene"/>
+                    </p:selectOneMenu>
                     
                 </h:panelGrid>
                 

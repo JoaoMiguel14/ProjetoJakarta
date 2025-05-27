@@ -1,0 +1,65 @@
+--nome: trabalhofinal
+
+--tabela usuarios
+/*create table usuarios (
+	id serial not null,
+	nome text not null, 
+	email text not null, 
+	senha text not null,
+	setor text not null,
+	permissao text not null,
+	constraint pk_tbl_usuarios primary key(id)
+);*/
+--ALTER TABLE usuarios ADD COLUMN datahorareg Timestamp with time zone NOT NULL;
+
+/*INSERT INTO public.usuarios(nome, email, senha, setor, permissao, datahorareg)
+VALUES ('admin', 'admin@gmail.com', '123', 'TI', 'admin', now());*/
+
+--select * from usuarios
+
+--tabela funcionarios
+/*create table funcionarios (
+	id serial not null,
+	nome text not null, 
+	dataNascimento Timestamp with time zone NOT NULL,
+	cpf text not null, 
+	idade Integer not null,
+	genero text not null,
+	cargo text not null,
+	constraint pk_tbl_funcionarios primary key(id)
+);*/
+--ALTER TABLE funcionarios ADD COLUMN datahorareg Timestamp with time zone NOT NULL;
+
+--select * from funcionarios
+
+/*INSERT INTO public.funcionarios(nome, dataNascimento, cpf, idade, genero, cargo, datahorareg)
+VALUES ('João Miguel', '04/08/2004', '024.587.550-62', 20, 'Masculino', 'Analista de TI', now());*/
+
+/*create table fornecedores (
+	id serial not null,
+	razaoSocial text not null, 
+	nomeFantasia text not null,
+	cnpj text not null, 
+	email text not null, 
+	constraint pk_tbl_fornecedores primary key(id)
+);*/
+--ALTER TABLE fornecedores ADD COLUMN datahorareg Timestamp with time zone NOT NULL;
+
+--select * from fornecedores
+
+/*create table produtos (
+	id serial not null,
+	descricao text not null,
+	preco numeric not null,
+	qtdEstoque numeric,
+	unidadeEmbalagem text not null,
+	categoria text not null,
+	constraint pk_tbl_produtos primary key(id)
+);*/
+--ALTER TABLE produtos ADD COLUMN datahorareg Timestamp with time zone NOT NULL;
+
+--select * from produtos
+
+/*INSERT INTO public.produtos(descricao, preco, qtdEstoque, unidadeEmbalagem, categoria, datahorareg)
+VALUES ('Banana', 5.99, 100, 'KG', 'FLV', now());*/
+

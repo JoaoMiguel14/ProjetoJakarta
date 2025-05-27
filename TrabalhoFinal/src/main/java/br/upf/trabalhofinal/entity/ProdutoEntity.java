@@ -12,6 +12,7 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -35,11 +36,11 @@ public class ProdutoEntity implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "preco")
-    private Number preco;
+    private BigDecimal  preco;
     
     @Basic(optional = false)
     @Column(name = "qtdEstoque")
-    private Number qtdEstoque;
+    private BigDecimal  qtdEstoque;
     
     @Basic(optional = false)
     @NotNull
@@ -73,19 +74,19 @@ public class ProdutoEntity implements Serializable {
         this.descricao = descricao;
     }
 
-    public Number getPreco() {
+    public BigDecimal  getPreco() {
         return preco;
     }
 
-    public void setPreco(Number preco) {
+    public void setPreco(BigDecimal  preco) {
         this.preco = preco;
     }
 
-    public Number getQtdEstoque() {
+    public BigDecimal  getQtdEstoque() {
         return qtdEstoque;
     }
 
-    public void setQtdEstoque(Number qtdEstoque) {
+    public void setQtdEstoque(BigDecimal  qtdEstoque) {
         this.qtdEstoque = qtdEstoque;
     }
 
