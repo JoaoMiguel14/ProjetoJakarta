@@ -1,0 +1,42 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pm="http://primefaces.org/manhattan">
+
+    <h:outputStylesheet library="css" name="custom.css" />
+
+    <div class="layout-sidebar">
+        <div class="layout-sidebar-logo">            
+            <a href="#" id="layout-sidebar-anchor" class="layout-sidebar-anchor" title="Toggle Menu">
+                <i class="pi"/>
+            </a>
+        </div>
+
+        <div class="layout-menu-container">
+            <h:form id="menuform">
+                <pm:menu widgetVar="ManhattanMenuWidget">
+                    <p:menuitem id="mnuUsuario" value="Usuários" icon="pi pi-fw pi-user"
+                        action="#{loginController.acessar('usuarios')}"
+                        styleClass="#{!loginController.verificarPermissao('usuarios') ? 'menuitem-disabled' : ''}" />
+
+                    <p:menuitem id="mnuFuncionario" value="Funcionários" icon="pi pi-fw pi-id-card"
+                        action="#{loginController.acessar('funcionarios')}"
+                        styleClass="#{!loginController.verificarPermissao('funcionarios') ? 'menuitem-disabled' : ''}" />
+
+                    <p:menuitem id="mnuFornecedor" value="Fornecedores" icon="pi pi-fw pi-truck"
+                        action="#{loginController.acessar('fornecedores')}"
+                        styleClass="#{!loginController.verificarPermissao('fornecedores') ? 'menuitem-disabled' : ''}" />
+
+                    <p:menuitem id="mnuProduto" value="Produtos" icon="pi pi-fw pi-box"
+                        action="#{loginController.acessar('produtos')}"
+                        styleClass="#{!loginController.verificarPermissao('produtos') ? 'menuitem-disabled' : ''}" />
+
+                    <p:menuitem id="mnuLogout" value="Logout" icon="pi pi-fw pi-sign-out" outcome="login.xhtml" />
+                </pm:menu>
+            </h:form>
+        </div>
+    </div>
+</ui:composition>
